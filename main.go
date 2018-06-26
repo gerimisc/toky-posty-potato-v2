@@ -1,8 +1,8 @@
 package main
 
 import (
-	"exp/slido_upvote/handler"
 	"fmt"
+	"github.com/sugiantoaudi/toky-posty-potato-v2/handler"
 	"os"
 	"strconv"
 )
@@ -15,12 +15,17 @@ func main() {
 
 		var slidoClient *handler.SlidoHttp
 		slidoClient = handler.NewClient()
-		eventID := os.Args[1]
+		eventCode := os.Args[1]
 		questionID := os.Args[2]
+
+		event_id, uuid := slidoClient.ObtainIDs(eventCode)
+
 		upvoteCount, _ := strconv.Atoi(os.Args[3])
+
 		//upVoteCount, _ := strconv.Atoi(os.Args[2])
-		tokenSlice := slidoClient.ObtainToken(eventID, upvoteCount)
+
+		tokenSlice := slidoClient.ObtainToken(uuid, upvoteCount)
 		fmt.Println(tokenSlice)
-		slidoClient.UpVote(eventID, questionID, tokenSlice...)
+		slidoClient.UpVote(event_id, questionID, tokenSlice...)
 	}
 }
